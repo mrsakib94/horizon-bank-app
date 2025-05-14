@@ -1,8 +1,28 @@
-export default function Home() {
+import HeaderBox from '@/components/HeaderBox';
+import TotalBalanceBox from '@/components/TotalBalanceBox';
+
+const Home = () => {
+  const loggedIn = { firstName: 'Sakib' };
+
   return (
-    <div>
-      <h1>Home</h1>
-      <p>Welcome to the home page!</p>
-    </div>
+    <section className="home">
+      <div className="home-content">
+        <header className="home-header">
+          <HeaderBox
+            type="greeting"
+            title="Welcome"
+            user={loggedIn?.firstName || 'Guest'}
+            subtext="Access and manager your account and transactions efficiently"
+          />
+          <TotalBalanceBox
+            accounts={[]}
+            totalBanks={1}
+            totalCurrentBalance={1250.35}
+          />
+        </header>
+      </div>
+    </section>
   );
-}
+};
+
+export default Home;
