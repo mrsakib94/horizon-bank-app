@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-prototype-builtins */
 import qs from 'query-string';
+import { isValid, parseISO } from 'date-fns';
+import { isValidStateAbbreviation } from 'usa-state-validator';
+import { postcodeValidator } from 'postcode-validator';
 import { twMerge } from 'tailwind-merge';
 import { type ClassValue, clsx } from 'clsx';
 import { z } from 'zod';
@@ -68,9 +71,9 @@ export const formatDateTime = (dateString: Date) => {
 };
 
 export function formatAmount(amount: number): string {
-  const formatter = new Intl.NumberFormat('en-AU', {
+  const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'AUD',
+    currency: 'USD',
     minimumFractionDigits: 2,
   });
 
@@ -196,9 +199,63 @@ export const getTransactionStatus = (date: Date) => {
   return date > twoDaysAgo ? 'Processing' : 'Success';
 };
 
-export const authFormSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8, {
-    message: 'Password must be at least 8 characters long',
-  }),
-});
+export const authFormSchema = (type: string) =>
+  z.object({
+    // sign up fields
+    firstName:
+      type === 'sign-in'
+        ? z.string().optional()
+        : z.string().min(2, 'First name must be at least 2 characters'),
+    lastName:
+      type === 'sign-in'
+        ? z.string().optional()
+        : z.string().min(2, 'Last name must be at least 2 characters'),
+    address1:
+      type === 'sign-in'
+        ? z.string().optional()
+        : z.string().max(50, 'Address too long'),
+    city:
+      type === 'sign-in'
+        ? z.string().optional()
+        : z.string().max(50, 'City name too long'),
+    state:
+      type === 'sign-in'
+        ? z.string().optional()
+        : z
+            .string()
+            .length(2, 'State must be 2 letters')
+            .refine(
+              (val) => isValidStateAbbreviation(val),
+              'Invalid U.S. state code',
+            ),
+    postalCode:
+      type === 'sign-in'
+        ? z.string().optional()
+        : z
+            .string()
+            .refine(
+              (val) => postcodeValidator(val, 'US'),
+              'Invalid U.S. ZIP code',
+            ),
+    dateOfBirth:
+      type === 'sign-in'
+        ? z.string().optional()
+        : z
+            .string()
+            .regex(
+              /^\d{4}-\d{2}-\d{2}$/,
+              'Date of Birth must be in YYYY-MM-DD format',
+            )
+            .refine((str) => {
+              const dob = parseISO(str);
+              return isValid(dob);
+            }, 'Date of Birth is not a valid date'),
+    ssn:
+      type === 'sign-in'
+        ? z.string().optional()
+        : z.string().regex(/^\d{9}$/, 'SSN must be exactly 9 digits'),
+
+    // fields for both
+    email: z.string().email('Invalid email format'),
+    password: z.string().min(8, 'Password must be at least 8 characters'),
+  });

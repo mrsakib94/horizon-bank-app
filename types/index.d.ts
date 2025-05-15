@@ -326,3 +326,7 @@ declare interface getBankProps {
 declare interface getBankByAccountIdProps {
   accountId: string;
 }
+
+declare module 'usa-state-validator' {
+  export function isValidStateAbbreviation(state: string): boolean;
+}
