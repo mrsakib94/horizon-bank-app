@@ -7,12 +7,16 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Loader2 } from 'lucide-react';
 import { authFormSchema } from '@/lib/utils';
+import { signIn, signUp } from '@/lib/actions/user.actions';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const AuthForm = ({ type }: AuthFormProps) => {
+  const router = useRouter();
+
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,14 +30,29 @@ const AuthForm = ({ type }: AuthFormProps) => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    console.log('Form submitted:', values);
-    // simulate delay
-    setTimeout(() => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      setIsLoading(true);
+
+      if (type === 'sign-up') {
+        const newUser = await signUp(data);
+
+        if (newUser) setUser(newUser);
+      }
+
+      if (type === 'sign-in') {
+        // const res = await signIn({
+        //   email: data.email,
+        //   password: data.password,
+        // });
+        // if (res) router.push('/');
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
       setIsLoading(false);
-    }, 2000);
-  }
+    }
+  };
 
   return (
     <section className="auth-form">
@@ -89,6 +108,13 @@ const AuthForm = ({ type }: AuthFormProps) => {
                     name="address1"
                     label="Address"
                     placeholder="Enter your street address"
+                    type="text"
+                  />
+                  <CustomFormInput
+                    control={form.control}
+                    name="city"
+                    label="City"
+                    placeholder="e.g. New York"
                     type="text"
                   />
                   <div className="flex gap-4">
