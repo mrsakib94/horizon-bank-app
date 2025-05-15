@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable no-prototype-builtins */
-import { type ClassValue, clsx } from 'clsx';
 import qs from 'query-string';
 import { twMerge } from 'tailwind-merge';
+import { type ClassValue, clsx } from 'clsx';
+import { z } from 'zod';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -194,3 +195,10 @@ export const getTransactionStatus = (date: Date) => {
 
   return date > twoDaysAgo ? 'Processing' : 'Success';
 };
+
+export const authFormSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8, {
+    message: 'Password must be at least 8 characters long',
+  }),
+});
