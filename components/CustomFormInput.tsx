@@ -33,10 +33,13 @@ const CustomFormInput = ({
       name={name}
       render={({ field }) => (
         <div className="form-item">
-          <FormLabel className="form-label">{label}</FormLabel>
+          <FormLabel htmlFor={name} className="form-label">
+            {label}
+          </FormLabel>
           <div className="flex w-full flex-col">
             <FormControl>
               <Input
+                id={name}
                 placeholder={placeholder}
                 type={type}
                 className="input-class"
