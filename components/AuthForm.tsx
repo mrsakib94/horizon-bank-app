@@ -41,11 +41,12 @@ const AuthForm = ({ type }: AuthFormProps) => {
       }
 
       if (type === 'sign-in') {
-        // const res = await signIn({
-        //   email: data.email,
-        //   password: data.password,
-        // });
-        // if (res) router.push('/');
+        const res = await signIn({
+          email: data.email,
+          password: data.password,
+        });
+
+        if (res) router.push('/');
       }
     } catch (err) {
       console.error(err);

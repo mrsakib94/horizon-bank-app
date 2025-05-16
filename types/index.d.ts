@@ -33,6 +33,7 @@ declare type User = {
   dwollaCustomerId: string;
   firstName: string;
   lastName: string;
+  name: string;
   address1: string;
   city: string;
   state: string;
@@ -210,6 +211,7 @@ declare interface TotlaBalanceBoxProps {
 
 declare interface FooterProps {
   user: User;
+  type?: 'desktop' | 'mobile';
 }
 
 declare interface RightSidebarProps {
@@ -292,7 +294,7 @@ declare interface getTransactionsByBankIdProps {
   bankId: string;
 }
 
-declare interface signInProps {
+declare interface SignInProps {
   email: string;
   password: string;
 }
