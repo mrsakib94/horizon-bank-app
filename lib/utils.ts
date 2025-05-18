@@ -80,6 +80,45 @@ export function formatAmount(amount: number): string {
   return formatter.format(amount);
 }
 
+export const formatCategory = (str: string) => {
+  // words to keep lowercase in title‐case (unless first word)
+  const minorWords = new Set([
+    'a',
+    'an',
+    'and',
+    'as',
+    'at',
+    'but',
+    'by',
+    'for',
+    'from',
+    'in',
+    'nor',
+    'of',
+    'on',
+    'or',
+    'per',
+    'the',
+    'to',
+    'vs',
+    'via',
+  ]);
+
+  // split on underscores, lowercase everything
+  const parts = str.toLowerCase().split('_');
+
+  return parts
+    .map((word, i) => {
+      if (i > 0 && minorWords.has(word)) {
+        // keep minor words lowercase (if not first word)
+        return word;
+      }
+      // otherwise capitalize first letter
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
+};
+
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
 export const removeSpecialCharacters = (value: string) => {
@@ -161,7 +200,7 @@ export function countTransactionCategories(
   // Convert the categoryCounts object to an array of objects
   const aggregatedCategories: CategoryCount[] = Object.keys(categoryCounts).map(
     (category) => ({
-      name: category,
+      name: formatCategory(category),
       count: categoryCounts[category],
       totalCount,
     }),
@@ -190,14 +229,6 @@ export function encryptId(id: string) {
 export function decryptId(id: string) {
   return atob(id);
 }
-
-export const getTransactionStatus = (date: Date) => {
-  const today = new Date();
-  const twoDaysAgo = new Date(today);
-  twoDaysAgo.setDate(today.getDate() - 2);
-
-  return date > twoDaysAgo ? 'Processing' : 'Success';
-};
 
 export const authFormSchema = (type: string) =>
   z.object({

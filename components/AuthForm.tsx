@@ -3,6 +3,7 @@
 import CustomFormInput from './CustomFormInput';
 import Image from 'next/image';
 import Link from 'next/link';
+import PlaidLink from './PlaidLink';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Loader2 } from 'lucide-react';
@@ -13,14 +14,11 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import PlaidLink from './PlaidLink';
 
 const AuthForm = ({ type }: AuthFormProps) => {
   const router = useRouter();
-
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
   const formSchema = authFormSchema(type);
 
   const form = useForm<z.infer<typeof formSchema>>({

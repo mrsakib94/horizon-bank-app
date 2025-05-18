@@ -60,7 +60,7 @@ declare type Account = {
   type: string;
   subtype: string;
   appwriteItemId: string;
-  sharableId: string;
+  shareableId: string;
 };
 
 declare type Transaction = {
@@ -89,7 +89,7 @@ declare type Bank = {
   accessToken: string;
   fundingSourceUrl: string;
   userId: string;
-  sharableId: string;
+  shareableId: string;
 };
 
 declare type AccountTypes =
@@ -179,15 +179,6 @@ declare interface PlaidLinkProps {
   dwollaCustomerId?: string;
 }
 
-// declare type User = sdk.Models.Document & {
-//   accountId: string;
-//   email: string;
-//   name: string;
-//   items: string[];
-//   accessToken: string;
-//   image: string;
-// };
-
 declare interface AuthFormProps {
   type: 'sign-in' | 'sign-up';
 }
@@ -257,15 +248,15 @@ declare interface PaymentTransferFormProps {
 }
 
 // Actions
-declare interface getAccountsProps {
+declare interface GetAccountsProps {
   userId: string;
 }
 
-declare interface getAccountProps {
+declare interface GetAccountProps {
   appwriteItemId: string;
 }
 
-declare interface getInstitutionProps {
+declare interface GetInstitutionProps {
   institutionId: string;
 }
 
@@ -290,7 +281,7 @@ declare interface CreateTransactionProps {
   email: string;
 }
 
-declare interface getTransactionsByBankIdProps {
+declare interface GetTransactionsByBankIdProps {
   bankId: string;
 }
 
@@ -299,7 +290,7 @@ declare interface SignInProps {
   password: string;
 }
 
-declare interface getUserInfoProps {
+declare interface GetUserInfoProps {
   userId: string;
 }
 
@@ -317,15 +308,15 @@ declare interface CreateBankAccountProps {
   shareableId: string;
 }
 
-declare interface getBanksProps {
+declare interface GetBanksProps {
   userId: string;
 }
 
-declare interface getBankProps {
+declare interface GetBankProps {
   documentId: string;
 }
 
-declare interface getBankByAccountIdProps {
+declare interface GetBankByAccountIdProps {
   accountId: string;
 }
 
