@@ -4,18 +4,20 @@ const isProduction = process.env['NODE_ENV'] === 'production';
 const isClient = typeof window !== 'undefined';
 
 // Pino options for the server environment
-const pinoOptions = {
-  transport: {
-    target: 'pino-pretty',
-    options: {
-      colorize: !isProduction,
-      translateTime: 'SYS:standard',
-      ignore: 'pid,hostname',
-      singleLine: true,
-      messageFormat: '{msg}',
-    },
-  },
-};
+const pinoOptions = !isProduction
+  ? {
+      transport: {
+        target: 'pino-pretty',
+        options: {
+          colorize: true,
+          translateTime: 'SYS:standard',
+          ignore: 'pid,hostname',
+          singleLine: true,
+          messageFormat: '{msg}',
+        },
+      },
+    }
+  : {};
 
 // Logger configuration: lower log levels or suppress logs in the browser
 const baseLogger: Logger = isClient
