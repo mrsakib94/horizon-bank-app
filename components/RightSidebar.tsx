@@ -1,10 +1,15 @@
-import { countTransactionCategories } from '@/lib/utils';
 import BankCard from './BankCard';
+import Category from './Category';
 import Image from 'next/image';
 import Link from 'next/link';
-import Category from './Category';
+import { countTransactionCategories } from '@/lib/utils';
+import { logger } from '@/lib/logger';
+
+const log = logger.child({ components: 'RightSidebar' });
 
 const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
+  log.debug('RightSidebar', { user, transactions, banks });
+
   const categories: CategoryCount[] = countTransactionCategories(transactions);
 
   return (

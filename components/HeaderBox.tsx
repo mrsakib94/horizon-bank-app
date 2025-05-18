@@ -1,9 +1,15 @@
+import { logger } from '@/lib/logger';
+
+const log = logger.child({ components: 'HeaderBox' });
+
 const HeaderBox = ({
   type = 'title',
   title,
   subtext,
   user,
 }: HeaderBoxProps) => {
+  log.debug('HeaderBox', { type, title, subtext, user });
+
   return (
     <div className="header-box">
       <h1 className="header-box-title">

@@ -14,8 +14,13 @@ import {
   removeSpecialCharacters,
 } from '@/lib/utils';
 import { transactionCategoryStyles } from '@/constants';
+import { logger } from '@/lib/logger';
+
+const log = logger.child({ components: 'TransactionsTable' });
 
 const CategoryBadge = ({ category }: CategoryBadgeProps) => {
+  log.debug('CategoryBadge', { category });
+
   const { borderColor, backgroundColor, textColor, chipBackgroundColor } =
     transactionCategoryStyles[
       formatCategory(category) as keyof typeof transactionCategoryStyles

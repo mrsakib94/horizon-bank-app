@@ -3,10 +3,13 @@
 import qs from 'query-string';
 import { isValid, parseISO } from 'date-fns';
 import { isValidStateAbbreviation } from 'usa-state-validator';
+import { logger } from './logger';
 import { postcodeValidator } from 'postcode-validator';
 import { twMerge } from 'tailwind-merge';
 import { type ClassValue, clsx } from 'clsx';
 import { z } from 'zod';
+
+const log = logger.child({ lib: 'utils' });
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -14,6 +17,8 @@ export function cn(...inputs: ClassValue[]) {
 
 // FORMAT DATE TIME
 export const formatDateTime = (dateString: Date) => {
+  log.debug('formatDateTime', { dateString });
+
   const dateTimeOptions: Intl.DateTimeFormatOptions = {
     weekday: 'short', // abbreviated weekday name (e.g., 'Mon')
     month: 'short', // abbreviated month name (e.g., 'Oct')
@@ -71,6 +76,8 @@ export const formatDateTime = (dateString: Date) => {
 };
 
 export function formatAmount(amount: number): string {
+  log.debug('formatAmount', { amount });
+
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -81,6 +88,8 @@ export function formatAmount(amount: number): string {
 }
 
 export const formatCategory = (str: string) => {
+  log.debug('formatCategory', { str });
+
   // words to keep lowercase in title‐case (unless first word)
   const minorWords = new Set([
     'a',
@@ -122,6 +131,8 @@ export const formatCategory = (str: string) => {
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
 export const removeSpecialCharacters = (value: string) => {
+  log.debug('removeSpecialCharacters', { value });
+
   return value.replace(/[^\w\s]/gi, '');
 };
 
@@ -132,6 +143,7 @@ interface UrlQueryParams {
 }
 
 export function formUrlQuery({ params, key, value }: UrlQueryParams) {
+  log.debug('formUrlQuery', { params, key, value });
   const currentUrl = qs.parse(params);
 
   currentUrl[key] = value;
@@ -146,6 +158,8 @@ export function formUrlQuery({ params, key, value }: UrlQueryParams) {
 }
 
 export function getAccountTypeColors(type: AccountTypes) {
+  log.debug('getAccountTypeColors', { type });
+
   switch (type) {
     case 'depository':
       return {
@@ -176,6 +190,7 @@ export function getAccountTypeColors(type: AccountTypes) {
 export function countTransactionCategories(
   transactions: Transaction[],
 ): CategoryCount[] {
+  log.debug('countTransactionCategories');
   const categoryCounts: { [category: string]: number } = {};
   let totalCount = 0;
 
@@ -213,6 +228,7 @@ export function countTransactionCategories(
 }
 
 export function extractCustomerIdFromUrl(url: string) {
+  log.debug('extractCustomerIdFromUrl', { url });
   // Split the URL string by '/'
   const parts = url.split('/');
 
@@ -223,10 +239,12 @@ export function extractCustomerIdFromUrl(url: string) {
 }
 
 export function encryptId(id: string) {
+  log.debug('encryptId', { id });
   return btoa(id);
 }
 
 export function decryptId(id: string) {
+  log.debug('decryptId', { id });
   return atob(id);
 }
 

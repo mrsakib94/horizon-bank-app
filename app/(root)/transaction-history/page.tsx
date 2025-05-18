@@ -1,13 +1,17 @@
 import HeaderBox from '@/components/HeaderBox';
+import TransactionsTable from '@/components/TransactionsTable';
+import { Pagination } from '@/components/Pagination';
 import { formatAmount } from '@/lib/utils';
 import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
-import TransactionsTable from '@/components/TransactionsTable';
-import { Pagination } from '@/components/Pagination';
+import { logger } from '@/lib/logger';
+
+const log = logger.child({ page: 'transaction-history' });
 
 const TransactionHistory = async ({
   searchParams: { id, page },
 }: SearchParamProps) => {
+  log.info('Rendering Transaction History page', { id, page });
   const currentPage = Number(page as string) || 1;
   const user = await getLoggedInUser();
   const accounts = await getAccounts({ userId: user?.$id });

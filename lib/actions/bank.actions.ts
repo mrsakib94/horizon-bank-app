@@ -3,12 +3,16 @@
 import { CountryCode } from 'plaid';
 import { getBanks, getBank } from './user.actions';
 import { getTransactionsByBankId } from './transaction.actions';
+import { logger } from '@/lib/logger';
 import { parseStringify } from '../utils';
 import { plaidClient } from '../plaid';
+
+const log = logger.child({ actions: 'bank-actions' });
 
 // Get multiple bank accounts
 export const getAccounts = async ({ userId }: GetAccountsProps) => {
   try {
+    log.info('getAccounts', { userId });
     // get banks from db
     const banks = await getBanks({ userId });
 
@@ -50,13 +54,14 @@ export const getAccounts = async ({ userId }: GetAccountsProps) => {
 
     return parseStringify({ data: accounts, totalBanks, totalCurrentBalance });
   } catch (error) {
-    console.error('An error occurred while getting the accounts:', error);
+    log.error('An error occurred while getting the accounts:', error);
   }
 };
 
 // Get one bank account
 export const getAccount = async ({ appwriteItemId }: GetAccountProps) => {
   try {
+    log.info('getAccount', { appwriteItemId });
     // get bank from db
     const bank = await getBank({ documentId: appwriteItemId });
 
@@ -115,7 +120,7 @@ export const getAccount = async ({ appwriteItemId }: GetAccountProps) => {
       transactions: allTransactions,
     });
   } catch (error) {
-    console.error('An error occurred while getting the account:', error);
+    log.error('An error occurred while getting the account:', error);
   }
 };
 
@@ -124,6 +129,8 @@ export const getInstitution = async ({
   institutionId,
 }: GetInstitutionProps) => {
   try {
+    log.info('getInstitution', { institutionId });
+
     const institutionResponse = await plaidClient.institutionsGetById({
       institution_id: institutionId,
       country_codes: ['US'] as CountryCode[],
@@ -133,7 +140,7 @@ export const getInstitution = async ({
 
     return parseStringify(intitution);
   } catch (error) {
-    console.error('An error occurred while getting the accounts:', error);
+    log.error('An error occurred while getting the accounts:', error);
   }
 };
 
@@ -141,6 +148,7 @@ export const getInstitution = async ({
 export const getTransactions = async ({
   accessToken,
 }: getTransactionsProps) => {
+  log.info('getTransactions');
   let hasMore = true;
   let transactions: any = [];
 
@@ -173,6 +181,6 @@ export const getTransactions = async ({
 
     return parseStringify(transactions);
   } catch (error) {
-    console.error('An error occurred while getting the accounts:', error);
+    log.error('An error occurred while getting the accounts:', error);
   }
 };

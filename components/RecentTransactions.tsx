@@ -4,6 +4,9 @@ import TransactionsTable from './TransactionsTable';
 import { BankTableItem } from './BankTabIeItem';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Pagination } from './Pagination';
+import { logger } from '@/lib/logger';
+
+const log = logger.child({ components: 'RecentTransactions' });
 
 const RecentTransactions = ({
   accounts,
@@ -11,6 +14,13 @@ const RecentTransactions = ({
   appwriteItemId,
   page,
 }: RecentTransactionsProps) => {
+  log.debug('RecentTransactions', {
+    accounts,
+    transactions,
+    appwriteItemId,
+    page,
+  });
+
   const rowsPerPage = 10;
   const totalPages = Math.ceil(transactions.length / rowsPerPage);
   const indexOfLastTransaction = page * rowsPerPage;

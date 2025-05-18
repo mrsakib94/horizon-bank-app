@@ -4,8 +4,13 @@ import RightSidebar from '@/components/RightSidebar';
 import TotalBalanceBox from '@/components/TotalBalanceBox';
 import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
+import { logger } from '@/lib/logger';
+
+const log = logger.child({ page: 'home' });
 
 const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
+  log.info('Rendering Home page', { id, page });
+
   const currentPage = Number(page as string) || 1;
   const user = await getLoggedInUser();
   const accounts = await getAccounts({ userId: user?.$id });

@@ -2,8 +2,12 @@ import HeaderBox from '@/components/HeaderBox';
 import PaymentTransferForm from '@/components/PaymentTransferForm';
 import { getAccounts } from '@/lib/actions/bank.actions';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
+import { logger } from '@/lib/logger';
+
+const log = logger.child({ page: 'payment-transfer' });
 
 const PaymentTransfer = async () => {
+  log.info('Rendering Payment Transfer page');
   const user = await getLoggedInUser();
   const accounts = await getAccounts({ userId: user?.$id });
 

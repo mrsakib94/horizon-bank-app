@@ -1,13 +1,18 @@
+import Copy from './Copy';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatAmount } from '@/lib/utils';
-import Copy from './Copy';
+import { logger } from '@/lib/logger';
+
+const log = logger.child({ components: 'BankCard' });
 
 const BankCard = ({
   account,
   username,
   showBalance = true,
 }: CreditCardProps) => {
+  log.debug('BankCard', { account, username, showBalance });
+
   return (
     <div className="flex flex-col">
       <Link

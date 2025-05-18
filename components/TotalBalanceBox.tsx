@@ -1,11 +1,20 @@
 import AnimatedCounter from './AnimatedCounter';
 import DoughnutChart from './DoughnutChart';
+import { logger } from '@/lib/logger';
+
+const log = logger.child({ components: 'TotalBalanceBox' });
 
 const TotalBalanceBox = ({
   accounts,
   totalBanks,
   totalCurrentBalance,
 }: TotlaBalanceBoxProps) => {
+  log.debug('TotalBalanceBox', {
+    accounts,
+    totalBanks,
+    totalCurrentBalance,
+  });
+
   return (
     <section className="total-balance">
       <div className="total-balance-chart">

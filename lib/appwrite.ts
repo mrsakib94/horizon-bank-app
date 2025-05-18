@@ -2,8 +2,13 @@
 'use server';
 import { Client, Account, Databases, Users } from 'node-appwrite';
 import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
+
+const log = logger.child({ lib: 'appwrite' });
 
 export async function createSessionClient() {
+  log.info('createSessionClient');
+
   const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
@@ -22,6 +27,8 @@ export async function createSessionClient() {
 }
 
 export async function createAdminClient() {
+  log.info('createAdminClient');
+
   const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)

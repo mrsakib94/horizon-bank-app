@@ -1,9 +1,14 @@
 import Image from 'next/image';
 import { Progress } from './ui/progress';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 import { topCategoryStyles } from '@/constants';
 
+const log = logger.child({ components: 'Category' });
+
 const Category = ({ category }: CategoryProps) => {
+  log.debug('Category', { category });
+
   const {
     bg,
     circleBg,

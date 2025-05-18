@@ -2,8 +2,12 @@ import BankCard from '@/components/BankCard';
 import HeaderBox from '@/components/HeaderBox';
 import { getAccounts } from '@/lib/actions/bank.actions';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
+import { logger } from '@/lib/logger';
+
+const log = logger.child({ page: 'my-banks' });
 
 const MyBanks = async () => {
+  log.info('Rendering My Banks page');
   const user = await getLoggedInUser();
   const accounts = await getAccounts({ userId: user?.$id });
 
